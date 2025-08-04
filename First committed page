@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VakalatCareer - Legal Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Login Page -->
+    <div id="loginPage" class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">VakalatCareer</h1>
+                <p class="text-gray-600">Your Legal Career Platform</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">User Type</label>
+                    <select id="userType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select User Type</option>
+                        <option value="client">Client</option>
+                        <option value="advocate">Advocate</option>
+                        <option value="student">Law Student</option>
+                        <option value="firm">Law Firm</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your email">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
+                    Login to VakalatCareer
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm">Don't have an account? Sign up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold text-blue-600">VakalatCareer</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span id="userWelcome" class="text-gray-700"></span>
+                        <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="bg-blue-600 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-8 py-4">
+                    <button onclick="showSection('clientAdvocate')" class="nav-btn hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-300">
+                        Client-Advocate Connect
+                    </button>
+                    <button onclick="showSection('studentInternship')" class="nav-btn hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-300">
+                        Student Internships
+                    </button>
+                    <button onclick="showSection('bareActs')" class="nav-btn hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-300">
+                        Bare Acts
+                    </button>
+                    <button onclick="showSection('dashboard')" class="nav-btn hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-300">
+                        My Dashboard
+                    </button>
+                    <button onclick="showSection('caseDatabase')" class="nav-btn hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-300">
+                        Case Database
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Client-Advocate Connect Section -->
+        <div id="clientAdvocate" class="section hidden p-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Find Your Legal Expert</h2>
+                
+                <!-- Filters -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                            <select id="locationFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select City</option>
+                                <option value="kanpur">Kanpur</option>
+                                <option value="delhi">Delhi</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="kolkata">Kolkata</option>
+                                <option value="chennai">Chennai</option>
+                                <option value="bangalore">Bangalore</option>
+                                <option value="hyderabad">Hyderabad</option>
+                                <option value="pune">Pune</option>
+                                <option value="ahmedabad">Ahmedabad</option>
+                                <option value="jaipur">Jaipur</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Specialization</label>
+                            <select id="specializationFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Specialization</option>
+                                <option value="dowry">Dowry Cases</option>
+                                <option value="criminal">Criminal Law</option>
+                                <option value="civil">Civil Law</option>
+                                <option value="family">Family Law</option>
+                                <option value="corporate">Corporate Law</option>
+                                <option value="property">Property Law</option>
+                                <option value="labor">Labor Law</option>
+                                <option value="tax">Tax Law</option>
+                                <option value="constitutional">Constitutional Law</option>
+                                <option value="intellectual">Intellectual Property</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex items-end">
+                            <button onclick="searchAdvocates()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                                Search Advocates
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advocates List -->
+                <div id="advocatesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sample advocates will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Internship Section -->
+        <div id="studentInternship" class="section hidden p-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Legal Internship Opportunities</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Post Resume Section -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Post Your Resume</h3>
+                        <form id="resumeForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Enter your full name">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Law School</label>
+                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Your law school name">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Year of Study</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Select Year</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                    <option value="5">5th Year</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Location</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Select City</option>
+                                    <option value="kanpur">Kanpur</option>
+                                    <option value="delhi">Delhi</option>
+                                    <option value="mumbai">Mumbai</option>
+                                    <option value="kolkata">Kolkata</option>
+                                    <option value="chennai">Chennai</option>
+                                    <option value="bangalore">Bangalore</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Specialization Interest</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Select Specialization</option>
+                                    <option value="criminal">Criminal Law</option>
+                                    <option value="civil">Civil Law</option>
+                                    <option value="corporate">Corporate Law</option>
+                                    <option value="family">Family Law</option>
+                                    <option value="property">Property Law</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Expected Stipend (₹/month)</label>
+                                <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Enter expected stipend">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Resume/CV</label>
+                                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 h-32" placeholder="Paste your resume content or key highlights here..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">
+                                Post Resume
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Available Internships -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Available Internships</h3>
+                        <div id="internshipsList" class="space-y-4">
+                            <!-- Internships will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bare Acts Section -->
+        <div id="bareActs" class="section hidden p-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Indian Bare Acts Library</h2>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <input type="text" id="actSearch" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Search for acts...">
+                        <select id="actCategory" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Categories</option>
+                            <option value="constitutional">Constitutional</option>
+                            <option value="criminal">Criminal</option>
+                            <option value="civil">Civil</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="labor">Labor</option>
+                        </select>
+                        <button onclick="searchActs()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            Search
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="actsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Acts will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section hidden p-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">My Dashboard</h2>
+                
+                <div id="dashboardContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dashboard content will be populated based on user type -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Database Section -->
+        <div id="caseDatabase" class="section hidden p-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Indian Case Database</h2>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="caseSearch" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Search cases...">
+                        <select id="courtFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Courts</option>
+                            <option value="supreme">Supreme Court</option>
+                            <option value="high">High Courts</option>
+                            <option value="district">District Courts</option>
+                            <option value="sessions">Sessions Courts</option>
+                        </select>
+                        <select id="caseType" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Case Type</option>
+                            <option value="criminal">Criminal</option>
+                            <option value="civil">Civil</option>
+                            <option value="constitutional">Constitutional</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                        <button onclick="searchCases()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            Search Cases
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="casesList" class="space-y-4">
+                    <!-- Cases will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 id="chatTitle" class="text-lg font-semibold">Chat</h3>
+                    <button onclick="closeChatModal()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="chatMessages" class="p-4 h-64 overflow-y-auto bg-gray-50">
+                    <!-- Chat messages will appear here -->
+                </div>
+                <div class="p-4 border-t">
+                    <div class="flex space-x-2">
+                        <input type="text" id="chatInput" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Type your message...">
+                        <button onclick="sendMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            Send
+                        </button>
+                    </div>
+                    <div class="mt-2">
+                        <button onclick="makeCall()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 mr-2">
+                            📞 Call
+                        </button>
+                        <button onclick="scheduleCall()" class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition duration-300">
+                            📅 Schedule Call
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentSection = 'clientAdvocate';
+
+        // Sample data
+        const sampleAdvocates = [
+            {
+                name: "Adv. Rajesh Kumar",
+                location: "kanpur",
+                specialization: "dowry",
+                experience: "15 years",
+                rating: 4.8,
+                cases: 250,
+                phone: "+91-9876543210"
+            },
+            {
+                name: "Adv. Priya Sharma",
+                location: "delhi",
+                specialization: "family",
+                experience: "12 years",
+                rating: 4.9,
+                cases: 180,
+                phone: "+91-9876543211"
+            },
+            {
+                name: "Adv. Amit Singh",
+                location: "mumbai",
+                specialization: "corporate",
+                experience: "20 years",
+                rating: 4.7,
+                cases: 300,
+                phone: "+91-9876543212"
+            },
+            {
+                name: "Adv. Sunita Verma",
+                location: "kanpur",
+                specialization: "criminal",
+                experience: "18 years",
+                rating: 4.6,
+                cases: 220,
+                phone: "+91-9876543213"
+            },
+            {
+                name: "Adv. Vikash Gupta",
+                location: "delhi",
+                specialization: "dowry",
+                experience: "10 years",
+                rating: 4.5,
+                cases: 150,
+                phone: "+91-9876543214"
+            }
+        ];
+
+        const bareActs = [
+            {
+                title: "Indian Penal Code, 1860",
+                category: "criminal",
+                sections: 511,
+                description: "The main criminal code of India"
+            },
+            {
+                title: "Code of Criminal Procedure, 1973",
+                category: "criminal",
+                sections: 484,
+                description: "Procedural law for criminal cases"
+            },
+            {
+                title: "Indian Contract Act, 1872",
+                category: "civil",
+                sections: 266,
+                description: "Law relating to contracts in India"
+            },
+            {
+                title: "Constitution of India, 1950",
+                category: "constitutional",
+                sections: 395,
+                description: "Supreme law of India"
+            },
+            {
+                title: "Companies Act, 2013",
+                category: "commercial",
+                sections: 470,
+                description: "Law governing companies in India"
+            },
+            {
+                title: "Indian Evidence Act, 1872",
+                category: "criminal",
+                sections: 167,
+                description: "Law of evidence in India"
+            },
+            {
+                title: "Transfer of Property Act, 1882",
+                category: "civil",
+                sections: 137,
+                description: "Law relating to transfer of property"
+            },
+            {
+                title: "Industrial Disputes Act, 1947",
+                category: "labor",
+                sections: 40,
+                description: "Law relating to industrial disputes"
+            }
+        ];
+
+        const sampleCases = [
+            {
+                title: "Kesavananda Bharati v. State of Kerala",
+                court: "supreme",
+                type: "constitutional",
+                year: "1973",
+                description: "Basic Structure Doctrine case - Landmark judgment establishing that Parliament cannot alter the basic structure of the Constitution"
+            },
+            {
+                title: "Maneka Gandhi v. Union of India",
+                court: "supreme",
+                type: "constitutional",
+                year: "1978",
+                description: "Right to life and personal liberty - Expanded the scope of Article 21 of the Constitution"
+            },
+            {
+                title: "Vishaka v. State of Rajasthan",
+                court: "supreme",
+                type: "criminal",
+                year: "1997",
+                description: "Sexual harassment at workplace guidelines - Established guidelines for prevention of sexual harassment"
+            },
+            {
+                title: "Mohd. Ahmed Khan v. Shah Bano Begum",
+                court: "supreme",
+                type: "civil",
+                year: "1985",
+                description: "Muslim personal law case regarding maintenance to divorced women"
+            },
+            {
+                title: "Indra Sawhney v. Union of India",
+                court: "supreme",
+                type: "constitutional",
+                year: "1992",
+                description: "Mandal Commission case - Upheld 27% reservation for OBCs with certain conditions"
+            },
+            {
+                title: "K.M. Nanavati v. State of Maharashtra",
+                court: "supreme",
+                type: "criminal",
+                year: "1962",
+                description: "Famous murder case that led to the abolition of jury trials in India"
+            }
+        ];
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userType = document.getElementById('userType').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!userType || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            currentUser = {
+                type: userType,
+                email: email,
+                name: email.split('@')[0]
+            };
+            
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainDashboard').classList.remove('hidden');
+            document.getElementById('userWelcome').textContent = Welcome, ${currentUser.name} (${currentUser.type});
+            
+            showSection('clientAdvocate');
+            loadDashboardContent();
+        });
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('mainDashboard').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.remove('hidden');
+            currentSection = sectionName;
+            
+            // Load section-specific content
+            if (sectionName === 'clientAdvocate') {
+                loadAdvocates();
+            } else if (sectionName === 'bareActs') {
+                loadBareActs();
+            } else if (sectionName === 'caseDatabase') {
+                loadCases();
+            } else if (sectionName === 'studentInternship') {
+                loadInternships();
+            }
+        }
+
+        function searchAdvocates() {
+            const location = document.getElementById('locationFilter').value;
+            const specialization = document.getElementById('specializationFilter').value;
+            
+            let filteredAdvocates = sampleAdvocates;
+            
+            if (location) {
+                filteredAdvocates = filteredAdvocates.filter(adv => adv.location === location);
+            }
+            
+            if (specialization) {
+                filteredAdvocates = filteredAdvocates.filter(adv => adv.specialization === specialization);
+            }
+            
+            displayAdvocates(filteredAdvocates);
+        }
+
+        function loadAdvocates() {
+            displayAdvocates(sampleAdvocates);
+        }
+
+        function displayAdvocates(advocates) {
+            const advocatesList = document.getElementById('advocatesList');
+            
+            if (advocates.length === 0) {
+                advocatesList.innerHTML = '<div class="col-span-full text-center text-gray-500 py-8">No advocates found matching your criteria. All requests are visible to advocates across India.</div>';
+                return;
+            }
+            
+            advocatesList.innerHTML = advocates.map(advocate => `
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                            ${advocate.name.split(' ')[1][0]}
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-800">${advocate.name}</h3>
+                            <p class="text-gray-600 capitalize">${advocate.location}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <p class="text-sm"><span class="font-medium">Specialization:</span> ${advocate.specialization.charAt(0).toUpperCase() + advocate.specialization.slice(1)}</p>
+                        <p class="text-sm"><span class="font-medium">Experience:</span> ${advocate.experience}</p>
+                        <p class="text-sm"><span class="font-medium">Cases Handled:</span> ${advocate.cases}</p>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium">Rating:</span>
+                            <div class="ml-2 flex items-center">
+                                <span class="text-yellow-500">★★★★★</span>
+                                <span class="ml-1 text-sm text-gray-600">${advocate.rating}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="openChatModal('${advocate.name}', '${advocate.phone}')" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 text-sm">
+                            💬 Message
+                        </button>
+                        <button onclick="makeCall('${advocate.phone}')" class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300 text-sm">
+                            📞 Call
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadBareActs() {
+            displayBareActs(bareActs);
+        }
+
+        function searchActs() {
+            const searchTerm = document.getElementById('actSearch').value.toLowerCase();
+            const category = document.getElementById('actCategory').value;
+            
+            let filteredActs = bareActs;
+            
+            if (searchTerm) {
+                filteredActs = filteredActs.filter(act => 
+                    act.title.toLowerCase().includes(searchTerm) || 
+                    act.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (category) {
+                filteredActs = filteredActs.filter(act => act.category === category);
+            }
+            
+            displayBareActs(filteredActs);
+        }
+
+        function displayBareActs(acts) {
+            const actsList = document.getElementById('actsList');
+            
+            actsList.innerHTML = acts.map(act => `
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">${act.title}</h3>
+                    <p class="text-gray-600 mb-3">${act.description}</p>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">${act.category.charAt(0).toUpperCase() + act.category.slice(1)}</span>
+                        <span class="text-sm text-gray-500">${act.sections} sections</span>
+                    </div>
+                    <button onclick="viewAct('${act.title}')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                        View Act
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadCases() {
+            displayCases(sampleCases);
+        }
+
+        function searchCases() {
+            const searchTerm = document.getElementById('caseSearch').value.toLowerCase();
+            const court = document.getElementById('courtFilter').value;
+            const type = document.getElementById('caseType').value;
+            
+            let filteredCases = sampleCases;
+            
+            if (searchTerm) {
+                filteredCases = filteredCases.filter(case_ => 
+                    case_.title.toLowerCase().includes(searchTerm) || 
+                    case_.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (court) {
+                filteredCases = filteredCases.filter(case_ => case_.court === court);
+            }
+            
+            if (type) {
+                filteredCases = filteredCases.filter(case_ => case_.type === type);
+            }
+            
+            displayCases(filteredCases);
+        }
+
+        function displayCases(cases) {
+            const casesList = document.getElementById('casesList');
+            
+            casesList.innerHTML = cases.map(case_ => `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-lg font-semibold text-gray-800">${case_.title}</h3>
+                        <span class="text-sm text-gray-500">${case_.year}</span>
+                    </div>
+                    <p class="text-gray-600 mb-3">${case_.description}</p>
+                    <div class="flex space-x-4 mb-4">
+                        <span class="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">${case_.court.charAt(0).toUpperCase() + case_.court.slice(1)} Court</span>
+                        <span class="text-sm text-green-600 bg-green-100 px-2 py-1 rounded">${case_.type.charAt(0).toUpperCase() + case_.type.slice(1)}</span>
+                    </div>
+                    <button onclick="viewCase('${case_.title}')" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                        View Full Case
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadInternships() {
+            const internshipsList = document.getElementById('internshipsList');
+            
+            const sampleInternships = [
+                {
+                    firm: "Kumar & Associates",
+                    location: "Delhi",
+                    specialization: "Corporate Law",
+                    stipend: "₹15,000/month",
+                    duration: "3 months"
+                },
+                {
+                    firm: "Legal Eagles LLP",
+                    location: "Mumbai",
+                    specialization: "Criminal Law",
+                    stipend: "₹12,000/month",
+                    duration: "6 months"
+                },
+                {
+                    firm: "Sharma Law Chambers",
+                    location: "Kanpur",
+                    specialization: "Family Law",
+                    stipend: "₹10,000/month",
+                    duration: "4 months"
+                },
+                {
+                    firm: "Metropolitan Legal Services",
+                    location: "Bangalore",
+                    specialization: "Intellectual Property",
+                    stipend: "₹18,000/month",
+                    duration: "6 months"
+                }
+            ];
+            
+            internshipsList.innerHTML = sampleInternships.map(internship => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800">${internship.firm}</h4>
+                    <p class="text-sm text-gray-600">${internship.location} • ${internship.specialization}</p>
+                    <p class="text-sm text-green-600 font-medium">${internship.stipend}</p>
+                    <p class="text-sm text-gray-500">Duration: ${internship.duration}</p>
+                    <button onclick="applyInternship('${internship.firm}')" class="mt-2 bg-blue-600 text-white py-1 px-3 rounded text-sm hover:bg-blue-700 transition duration-300">
+                        Apply Now
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadDashboardContent() {
+            const dashboardContent = document.getElementById('dashboardContent');
+            
+            if (currentUser.type === 'client') {
+                dashboardContent.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">My Requests</h3>
+                        <div class="space-y-3">
+                            <div class="border-l-4 border-blue-500 pl-4">
+                                <p class="font-medium">Dowry Case Consultation</p>
+                                <p class="text-sm text-gray-600">Status: Pending Response</p>
+                                <p class="text-xs text-gray-500">Visible to all advocates across India</p>
+                            </div>
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <p class="font-medium">Property Dispute Query</p>
+                                <p class="text-sm text-gray-600">Status: Response Received</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Connected Advocates</h3>
+                        <p class="text-2xl font-bold text-blue-600">5</p>
+                        <p class="text-sm text-gray-600">advocates connected</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                        <div class="space-y-2">
+                            <p class="text-sm">• Message from Adv. Rajesh Kumar</p>
+                            <p class="text-sm">• Call scheduled with Adv. Priya Sharma</p>
+                        </div>
+                    </div>
+                `;
+            } else if (currentUser.type === 'advocate') {
+                dashboardContent.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Client Requests</h3>
+                        <div class="space-y-3">
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <p class="font-medium">New consultation request</p>
+                                <p class="text-sm text-gray-600">From: client@example.com</p>
+                                <p class="text-xs text-gray-500">Dowry case - Kanpur</p>
+                            </div>
+                            <div class="border-l-4 border-yellow-500 pl-4">
+                                <p class="font-medium">Follow-up required</p>
+                                <p class="text-sm text-gray-600">Property dispute case</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Profile Views</h3>
+                        <p class="text-2xl font-bold text-blue-600">24</p>
+                        <p class="text-sm text-gray-600">This month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Cases This Month</h3>
+                        <p class="text-2xl font-bold text-green-600">8</p>
+                        <p class="text-sm text-gray-600">New cases handled</p>
+                    </div>
+                `;
+            } else if (currentUser.type === 'student') {
+                dashboardContent.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resume Status</h3>
+                        <p class="text-green-600 mb-2">✓ Resume Posted</p>
+                        <p class="text-sm text-gray-600">Viewed by 12 advocates</p>
+                        <p class="text-sm text-gray-600">Forwarded to 25 firms across India</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Applications</h3>
+                        <p class="text-2xl font-bold text-blue-600">3</p>
+                        <p class="text-sm text-gray-600">Pending responses</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Internship Matches</h3>
+                        <p class="text-2xl font-bold text-purple-600">7</p>
+                        <p class="text-sm text-gray-600">Available opportunities</p>
+                    </div>
+                `;
+            } else if (currentUser.type === 'firm') {
+                dashboardContent.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Student Applications</h3>
+                        <p class="text-2xl font-bold text-blue-600">15</p>
+                        <p class="text-sm text-gray-600">New applications this week</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Active Interns</h3>
+                        <p class="text-2xl font-bold text-green-600">6</p>
+                        <p class="text-sm text-gray-600">Currently working</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Client Inquiries</h3>
+                        <p class="text-2xl font-bold text-purple-600">12</p>
+                        <p class="text-sm text-gray-600">This month</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Resume form submission
+        document.getElementById('resumeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Resume posted successfully! It has been forwarded to all relevant advocates and firms across India based on your location and specialization preferences.');
+            loadDashboardContent(); // Refresh dashboard to show updated stats
+        });
+
+        // Chat functionality
+        function openChatModal(name, phone) {
+            document.getElementById('chatModal').classList.remove('hidden');
+            document.getElementById('chatTitle').textContent = Chat with ${name};
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="text-center text-gray-500 text-sm mb-4">
+                    Chat started with ${name}<br>
+                    <span class="text-xs">All conversations are secure and confidential</span>
+                </div>
+            `;
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').classList.add('hidden');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.innerHTML += `
+                    <div class="mb-2 text-right">
+                        <div class="inline-block bg-blue-600 text-white px-3 py-2 rounded-lg text-sm max-w-xs">
+                            ${message}
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">${new Date().toLocaleTimeString()}</div>
+                    </div>
+                `;
+                input.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                
+                // Simulate response
+                setTimeout(() => {
+                    messagesDiv.innerHTML += `
+                        <div class="mb-2">
+                            <div class="inline-block bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm max-w-xs">
+                                Thank you for your message. I'll review your case details and get back to you within 24 hours.
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">${new Date().toLocaleTimeString()}</div>
+                        </div>
+                    `;
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 1500);
+            }
+        }
+
+        function makeCall(phone) {
+            alert(Initiating call to ${phone || 'advocate'}.\n\nThis is a demo feature. In the actual platform, this would:\n• Connect you via secure VoIP\n• Record call for legal purposes\n• Provide call transcription\n• Bill consultation time automatically);
+        }
+
+        function scheduleCall() {
+            alert('Call scheduling feature opened.\n\nIn the actual platform, you would be able to:\n• View advocate\'s available time slots\n• Book appointments with automatic reminders\n• Set up video consultations\n• Receive calendar invites');
+        }
+
+        function viewAct(title) {
+            alert(Opening ${title}\n\nIn the actual platform, this would display:\n• Complete text of the act with section-wise navigation\n• Search functionality within the act\n• Bookmark important sections\n• Related case law references\n• Amendment history);
+        }
+
+        function viewCase(title) {
+            alert(Opening case: ${title}\n\nIn the actual platform, this would show:\n• Complete case details and judgment\n• Case timeline and proceedings\n• Related cases and precedents\n• Legal principles established\n• Citation information);
+        }
+
+        function applyInternship(firm) {
+            alert(Application submitted to ${firm}!\n\nYour resume has been forwarded to them along with:\n• Your specialization preferences\n• Expected stipend details\n• Availability information\n\nYou will receive updates on your dashboard.);
+        }
+
+        // Enter key support for chat
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set focus on user type dropdown
+            document.getElementById('userType').focus();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a04599d1b459d6',t:'MTc1NDMzMzc1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
